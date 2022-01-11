@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import lombok.Data;
 
 @Data
-public class MallUserDTO {
+public class RegisterDTO {
 	
 	@NotEmpty
 	public String name;

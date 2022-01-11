@@ -26,4 +26,10 @@ public class MallUser extends BaseEntity{
 	@Column(name="pass_word")
 	private String passWord;
 	
+	@Column(name="is_enable")
+	private String isEnable;
+	
+	@Column(name="is_shopable")
+	private String isShopable;
+	
 }
