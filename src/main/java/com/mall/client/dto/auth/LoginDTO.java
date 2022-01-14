@@ -7,9 +7,9 @@ import lombok.Data;
 public class LoginDTO {
 
 	@NotEmpty
-	public String account;
+	String account;
 	
 	@NotEmpty
-	public String passWord;
+	String passWord;
 	
 }

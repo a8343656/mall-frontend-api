@@ -8,16 +8,16 @@ import lombok.Data;
 public class RegisterDTO {
 	
 	@NotEmpty
-	public String name;
+	String name;
 	
 	@NotEmpty
-	public String address;
+	String address;
 
 	@NotEmpty
 	@Length(min = 2 , message = "長度須在2個字元以上")
-	public String account;
+	String account;
 	
 	@NotEmpty
-	public String passWord;
+	String passWord;
 	
 }

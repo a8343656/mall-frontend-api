@@ -23,6 +23,7 @@ public class AuthService {
 	
 	@Autowired UserRepository userRepository;
 	@Autowired UserLoginDataRepository userLoginDataRepository;
+	@Autowired UtilService utilService;
 	
 	public ActionResult register (MallUser user) {
 		
@@ -34,7 +35,7 @@ public class AuthService {
 		}
 		
 		//密碼轉為MD5加密，並將帳號預設為啟用與可以購物
-		String md5Pws = getMD5(user.getPassWord());
+		String md5Pws = utilService.getMD5(user.getPassWord());
 		
 		user.setPassWord(md5Pws);
 		user.setIsEnable("1");
@@ -49,7 +50,7 @@ public class AuthService {
 	
 	public ActionResult login (MallUser user) {
 		
-		String md5Pws = getMD5(user.getPassWord());
+		String md5Pws = utilService.getMD5(user.getPassWord());
 		user.setPassWord(md5Pws);
 		
 		//查詢該帳號是否存在
@@ -92,20 +93,5 @@ public class AuthService {
 		return new ActionResult(true);
 	}
 	
-	private String getMD5(String str) {
-		
-		try {
-			// 生成一個MD5加密計算摘要
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			// 計算md5函式
-			md.update(str.getBytes());
 
-			// digest()最後確定返回md5 hash值，返回值為8為字串。因為md5 hash值是16位的hex值，實際上就是8位的字元
-			// BigInteger函式則將8位的字串轉換成16位hex值，用字串來表示；得到字串形式的hash值
-			return new BigInteger(1, md.digest()).toString(16);
-		} catch (Exception e) {
-			throw new RuntimeException("MD5加密出現錯誤");
-		}
-
-	}
 }

@@ -1,5 +1,6 @@
 package com.mall.client.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -13,7 +14,8 @@ import com.mall.client.entity.UserLoginData;
 public interface UserLoginDataRepository extends JpaRepository<UserLoginData,Long>{
 	@Modifying
 	@Transactional
-	public Integer deleteByUserId(Long long1);
+	public Integer deleteByUserId(Long userId);
 	
-	public List<UserLoginData> findByUserIdAndToken(Integer userId , String token);
+	public List<UserLoginData> findByUserIdAndTokenAndValidTimeGreaterThan(Long userId , String token,Date now);
+	
 }
