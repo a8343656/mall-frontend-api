@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 
@@ -12,6 +13,7 @@ import lombok.Data;
 @Entity
 @Table(name="mall_user" )
 @Data
+@EqualsAndHashCode(callSuper = true)
 public class MallUser extends BaseEntity{
 	
 	@Column(name="name")
