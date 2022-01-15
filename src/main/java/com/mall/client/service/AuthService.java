@@ -1,13 +1,10 @@
 package com.mall.client.service;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -11,7 +11,11 @@ public enum ErrorCode {
 	ACCOUNT_BAN("1001102","this account has been deactivated"),
 	
 	//使用者相關錯誤
-	USER_ID_NOT_FOUND("1001201","this userId not found");
+	USER_ID_NOT_FOUND("1001201","this userId not found"),
+	
+	
+	//商品相關錯誤
+	PRODUCT_NOT_FOUND("1001301","this product not found");
 	
 	
 	private String code;
