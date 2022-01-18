@@ -21,18 +21,25 @@ public class AuthInterceptor implements HandlerInterceptor{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 	throws Exception {
-		//從 header 拿取 token 進行驗證
-		Long userId = Long.valueOf(request.getHeader("userId"));
-		String token = request.getHeader("userToken");
-		Date now = new Date();
-		List<UserLoginData> validLoginData = userLoginDataRepository.findByUserIdAndTokenAndValidTimeGreaterThan(userId,token,now);
-		
-		if(validLoginData.isEmpty()) {
-			response.getWriter().write("token expired");
+		try {
+			//從 header 拿取 token 進行驗證
+			Long userId = Long.valueOf(request.getHeader("userId"));
+			String token = request.getHeader("userToken");
+			Date now = new Date();
+			List<UserLoginData> validLoginData = userLoginDataRepository.findByUserIdAndTokenAndValidTimeGreaterThan(userId,token,now);
+			
+			if(validLoginData.isEmpty()) {
+				response.getWriter().write("token expired");
+		        response.setStatus(401);
+				return false;
+			} else {
+				return true;
+			}
+		}catch(NumberFormatException nm) {
+			response.getWriter().write("userId formate not correct");
 	        response.setStatus(401);
 			return false;
-		} else {
-			return true;
 		}
+
     }
 }

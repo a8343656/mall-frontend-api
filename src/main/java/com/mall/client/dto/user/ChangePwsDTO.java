@@ -9,9 +9,9 @@ import lombok.Data;
 public class ChangePwsDTO {
 	
 	@Min(1)
-	public Long id;
+	Long id;
 	
 	@NotEmpty
-	public String passWord;
+	String passWord;
 
 }

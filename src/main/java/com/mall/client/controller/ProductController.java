@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.product.AddShoppingCarDTO;
 import com.mall.client.service.ProductService;
+import com.mall.client.service.UtilService;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -24,11 +26,12 @@ import org.springframework.data.domain.Sort;
 public class ProductController {
 	
 	@Autowired ProductService productService;
+	@Autowired UtilService utilService;
 	
 	@GetMapping("/getProductList")
 	public ActionResult getProductList (@RequestParam("page")@Min(0) Integer page ,@RequestParam("column")@NotEmpty String column) {
 
-		Pageable pageable = PageRequest.of(page, 8, Sort.by(column).descending());
+		Pageable pageable = utilService.pageRequest(page, 8, column, "DESC");
 		return productService.getProductList(pageable);
 	
 	}

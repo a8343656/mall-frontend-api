@@ -3,10 +3,23 @@ package com.mall.client.service;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UtilService {
+	
+	public PageRequest pageRequest (Integer page , Integer size , String col , String sort) {
+		
+		if(sort == "DESC") {
+			return PageRequest.of(page, size, Sort.by(col).descending());
+		} 
+		
+		return PageRequest.of(page, size, Sort.by(col).ascending());
+		
+	}
 
 	public String getMD5(String str) {
 		

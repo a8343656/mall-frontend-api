@@ -6,15 +6,15 @@ import org.hibernate.validator.constraints.Length;
 import lombok.Data;
 
 @Data
-public class ChangeMemberDataDTO {
+public class GetShoppingCarDTO {
 	
 	@Min(1)
-	Long id;
+	Long userId;
+	
+	@Min(0)
+	Integer page ;
 	
 	@NotEmpty
-	String name;
+	String sortCol;
 
-	@NotEmpty
-	String address;
-	
 }
