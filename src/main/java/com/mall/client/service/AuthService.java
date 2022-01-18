@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang3.time.DateUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
+import com.mall.client.dto.auth.LoginDTO;
+import com.mall.client.dto.auth.RegisterDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.UserLoginData;
 import com.mall.client.repository.UserLoginDataRepository;
@@ -21,9 +24,11 @@ public class AuthService {
 	@Autowired UserRepository userRepository;
 	@Autowired UserLoginDataRepository userLoginDataRepository;
 	@Autowired UtilService utilService;
+	@Autowired ModelMapper modelMapper;
 	
-	public ActionResult register (MallUser user) {
+	public ActionResult register (RegisterDTO data) {
 		
+		MallUser user = modelMapper.map(data,MallUser.class);
 		//搜尋帳號是否重複
 		List<MallUser> dataList = userRepository.findByAccount(user.getAccount());
 		
@@ -45,7 +50,9 @@ public class AuthService {
 
 	}
 	
-	public ActionResult login (MallUser user) {
+	public ActionResult login (LoginDTO data) {
+		
+		MallUser user = modelMapper.map(data,MallUser.class);
 		
 		String md5Pws = utilService.getMD5(user.getPassWord());
 		user.setPassWord(md5Pws);

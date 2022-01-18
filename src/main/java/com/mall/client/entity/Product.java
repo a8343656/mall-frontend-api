@@ -28,6 +28,6 @@ public class Product extends BaseEntity{
 	private String imageUrl;
 	
 	@Column(name="is_buyable")
-	private Integer isBuyable;
+	private String isBuyable;
 
 }

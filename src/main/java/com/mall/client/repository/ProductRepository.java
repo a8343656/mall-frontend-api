@@ -9,7 +9,7 @@ import com.mall.client.entity.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long>{
 	
-	public Page<Product> findByIsBuyable (Integer isBuyable , Pageable pageable);
-	public Product findByIdAndIsBuyable (Long id , Integer isBuyable);
+	public Page<Product> findByIsBuyable (String isBuyable , Pageable pageable);
+	public Product findByIdAndIsBuyable (Long id , String isBuyable);
 	
 }
