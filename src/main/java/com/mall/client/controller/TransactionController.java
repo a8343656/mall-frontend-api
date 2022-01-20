@@ -13,38 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mall.client.dto.ActionResult;
+import com.mall.client.dto.transaction.BuyDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
+import com.mall.client.service.TransactionService;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-
-	@Autowired UserService userService;
-	@Autowired UtilService utilService;
-
-	@PutMapping("/changeMemberData")
-	public ActionResult changeMemberData (@RequestBody @Validated ChangeMemberDataDTO changeData ) {
-		
-		return userService.changeMemberData(changeData);
-		
-	}
+@RequestMapping("/transaction")
+public class TransactionController {
 	
-	@PutMapping("/changePws")
-	public ActionResult changeMemberData (@RequestBody @Validated ChangePwsDTO changeData ) {
+	@Autowired TransactionService transactionService;
+
+	@PostMapping("/buy")
+	public ActionResult buy (@RequestBody @Validated BuyDTO buyData ) {
 		
-		return userService.changePws(changeData);
-		
-	}
-	
-	@PostMapping("/getShoppingCarList")
-	public ActionResult getShoppingCarList (@RequestBody @Validated GetShoppingCarDTO data ) {
-		
-		Pageable pageable = utilService.pageRequest(data.getPage(),8,data.getSortCol(),"DESC");
-		return userService.getShoppingCarList(data.getUserId(),pageable);
+		return transactionService.buy(buyData);
 		
 	}
 	

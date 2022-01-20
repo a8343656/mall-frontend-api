@@ -64,10 +64,10 @@ public class ProductService {
 			return checkResult;
 		}
 			
-		// 查詢該商品是否可被購買，數量是否足夠
-		ActionResult checkResult2 = checkService.isProductBuyable(data.getProductId());
+		// 查詢該商品是否可被購買，且庫存大於1
+		ActionResult checkResult2 = checkService.isProductBuyable(data.getProductId(),1);
 		if (!checkResult2.isSucess()) {
-			return checkResult;
+			return checkResult2;
 		}
 		
 		//查詢該物品是否已在購物車中，不存在才做儲存

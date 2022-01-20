@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name="Order" )
+@Table(name="product_order" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Order extends BaseEntity{
+public class ProductOrder extends BaseEntity{
 	
 	@Column(name="user_id")
 	private Long userId;
@@ -23,5 +23,8 @@ public class Order extends BaseEntity{
 	
 	@Column(name="status")
 	private Integer status;
+	
+	@Column(name="amount")
+	private Integer amount;
 
 }

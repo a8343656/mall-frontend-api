@@ -34,7 +34,7 @@ public class CheckService {
 		
 	}
 	
-	public ActionResult isProductBuyable (Long productId) {
+	public ActionResult isProductBuyable (Long productId, Integer buyAmount) {
 		
 		// 查詢該商品是否可被購買，數量是否足夠
 		Optional<Product> data = productRepository.findById(productId);
@@ -46,7 +46,7 @@ public class CheckService {
 		
 		if (product.getIsBuyable() == "0") {
 			return new ActionResult(false,ErrorCode.PRODUCT_NOT_AVAILABLE.getCode() ,ErrorCode.PRODUCT_NOT_AVAILABLE.getMsg());
-		} else if(product.getAmount() == 0){
+		} else if(product.getAmount() < buyAmount){
 			return new ActionResult(false,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getCode() ,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getMsg());
 		} else {
 			return new ActionResult(true);
