@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
+import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
@@ -45,6 +46,14 @@ public class UserController {
 		
 		Pageable pageable = utilService.pageRequest(data.getPage(),8,data.getSortCol(),"DESC");
 		return userService.getShoppingCarList(data.getUserId(),pageable);
+		
+	}
+	
+	@PostMapping("/getOrderList")
+	public ActionResult getOrderList (@RequestBody @Validated GetOrderListDTO data ) {
+		
+		Pageable pageable = utilService.pageRequest(data.getPage(),8,data.getSortCol(),"DESC");
+		return userService.getOrderList(data.getUserId(),pageable);
 		
 	}
 	

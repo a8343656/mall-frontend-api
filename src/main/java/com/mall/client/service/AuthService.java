@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.auth.LoginDTO;
+import com.mall.client.dto.auth.LogoutDTO;
 import com.mall.client.dto.auth.RegisterDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.UserLoginData;
@@ -89,9 +90,9 @@ public class AuthService {
 		return new ActionResult(true,dataMap);
 	}
 	
-	public ActionResult logout (MallUser user) {
+	public ActionResult logout (LogoutDTO data) {
 		//移除該筆登入資料
-		userLoginDataRepository.deleteByUserId(user.getId());
+		userLoginDataRepository.deleteByUserId(data.getUserId());
 		
 		//回傳成功
 		return new ActionResult(true);

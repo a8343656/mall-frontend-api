@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.auth.LoginDTO;
+import com.mall.client.dto.auth.LogoutDTO;
 import com.mall.client.dto.auth.RegisterDTO;
 import com.mall.client.service.AuthService;
 
@@ -30,6 +31,13 @@ public class AuthController {
 	public ActionResult login (@RequestBody @Validated LoginDTO data) {
 		
 		return authService.login(data);
+		
+	}
+	
+	@PostMapping("/logout")
+	public ActionResult logout (@RequestBody @Validated LogoutDTO data) {
+		
+		return authService.logout(data);
 		
 	}
 }

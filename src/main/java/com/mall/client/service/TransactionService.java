@@ -7,7 +7,7 @@ import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.transaction.BuyDTO;
 import com.mall.client.entity.ProductOrder;
 import com.mall.client.entity.Product;
-import com.mall.client.repository.OrderRepository;
+import com.mall.client.repository.ProductOrderRepository;
 import com.mall.client.repository.ProductRepository;
 
 @Service
@@ -15,7 +15,7 @@ public class TransactionService {
 	
 	@Autowired CheckService checkService;
 	@Autowired ProductRepository productRepository;
-	@Autowired OrderRepository orderRepository;
+	@Autowired ProductOrderRepository productOrderRepository;
 	public ActionResult buy (BuyDTO buyData) {
 		
 		// 檢查該使用者是否存在，並確認是否有購買資格
@@ -41,7 +41,7 @@ public class TransactionService {
 		order.setProductId(buyData.getProductId());
 		order.setStatus(0);
 		order.setAmount(buyData.getAmount());
-		orderRepository.save(order);
+		productOrderRepository.save(order);
 		
 		return new ActionResult(true);
 	}
