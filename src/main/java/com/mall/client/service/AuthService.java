@@ -38,9 +38,9 @@ public class AuthService {
 		}
 		
 		//密碼轉為MD5加密，並將帳號預設為啟用與可以購物
-		String md5Pws = utilService.getMD5(user.getPassWord());
+		String md5Pws = utilService.getMD5(user.getPassword());
 		
-		user.setPassWord(md5Pws);
+		user.setPassword(md5Pws);
 		user.setIsEnable("1");
 		user.setIsShopable("1");
 		
@@ -55,11 +55,11 @@ public class AuthService {
 		
 		MallUser user = modelMapper.map(data,MallUser.class);
 		
-		String md5Pws = utilService.getMD5(user.getPassWord());
-		user.setPassWord(md5Pws);
+		String md5Pws = utilService.getMD5(user.getPassword());
+		user.setPassword(md5Pws);
 		
 		//查詢該帳號是否存在
-		List<MallUser> dataList = userRepository.findByAccountAndPassWord(user.getAccount(),user.getPassWord());
+		List<MallUser> dataList = userRepository.findByAccountAndPassword(user.getAccount(),user.getPassword());
 		
 		if(dataList.isEmpty()) {
 			return new ActionResult(false,ErrorCode.ACCOUNT_OR_PWS_INCORRECT.getCode(),ErrorCode.ACCOUNT_OR_PWS_INCORRECT.getMsg());
@@ -86,6 +86,7 @@ public class AuthService {
 		
 		//回傳 token 與成功訊息
 		Map<String, String> dataMap = new HashMap<>();
+		dataMap.put("userId", dbUser.getId().toString());
 		dataMap.put("token", token);
 		return new ActionResult(true,dataMap);
 	}

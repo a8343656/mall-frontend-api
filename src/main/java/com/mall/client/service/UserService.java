@@ -57,7 +57,7 @@ public class UserService {
 		// 依照傳入的資料修改並儲存
 		MallUser user = data.get();
 		String md5Pws = utilService.getMD5(changeData.getPassWord());
-		user.setPassWord(md5Pws);
+		user.setPassword(md5Pws);
 
 		userRepository.save(user);
 		

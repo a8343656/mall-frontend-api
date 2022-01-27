@@ -10,6 +10,6 @@ public class LoginDTO {
 	String account;
 	
 	@NotEmpty
-	String passWord;
+	String password;
 	
 }
