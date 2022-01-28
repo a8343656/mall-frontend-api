@@ -20,13 +20,13 @@ public class TransactionService {
 		
 		// 檢查該使用者是否存在，並確認是否有購買資格
 		ActionResult checkResult = checkService.isUserPresentAndBuyAble(buyData.getUserId());
-		if (!checkResult.isSucess()) {
+		if (!checkResult.isSuccess()) {
 			return checkResult;
 		}
 			
 		// 查詢該商品是否可被購買，數量是否足夠
 		ActionResult checkResult2 = checkService.isProductBuyable(buyData.getProductId(),buyData.getAmount());
-		if (!checkResult2.isSucess()) {
+		if (!checkResult2.isSuccess()) {
 			return checkResult2;
 		}
 		

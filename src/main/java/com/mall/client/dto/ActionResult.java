@@ -7,22 +7,22 @@ import lombok.Data;
 @Data
 public class ActionResult {
 	
-	boolean sucess ;
+	boolean success ;
 	Object data;
 	String errorCode;
 	String errorMsg;
 	
-	public ActionResult(boolean sucess){
-		this.sucess = sucess;
+	public ActionResult(boolean success){
+		this.success = success;
 	}
 	
-	public ActionResult(boolean sucess , Object data){
-		this.sucess = sucess;
+	public ActionResult(boolean success , Object data){
+		this.success = success;
 		this.data = data;
 	}
 	
-	public ActionResult(boolean sucess , String errorCode , String errorMsg){
-		this.sucess = sucess;
+	public ActionResult(boolean success , String errorCode , String errorMsg){
+		this.success = success;
 		this.errorCode = errorCode;
 		this.errorMsg = errorMsg;
 	}

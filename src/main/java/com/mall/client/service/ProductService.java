@@ -60,13 +60,13 @@ public class ProductService {
 		
 		// 檢查該使用者是否存在，並確認是否有購買資格
 		ActionResult checkResult = checkService.isUserPresentAndBuyAble(data.getUserId());
-		if (!checkResult.isSucess()) {
+		if (!checkResult.isSuccess()) {
 			return checkResult;
 		}
 			
 		// 查詢該商品是否可被購買，且庫存大於1
 		ActionResult checkResult2 = checkService.isProductBuyable(data.getProductId(),1);
-		if (!checkResult2.isSucess()) {
+		if (!checkResult2.isSuccess()) {
 			return checkResult2;
 		}
 		
