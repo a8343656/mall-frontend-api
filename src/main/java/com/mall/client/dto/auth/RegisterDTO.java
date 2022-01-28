@@ -18,6 +18,6 @@ public class RegisterDTO {
 	String account;
 	
 	@NotEmpty
-	String passWord;
+	String password;
 	
 }

@@ -38,7 +38,8 @@ public class AuthService {
 		}
 		
 		//密碼轉為MD5加密，並將帳號預設為啟用與可以購物
-		String md5Pws = utilService.getMD5(user.getPassword());
+		String originPws = user.getPassword();
+		String md5Pws = utilService.getMD5(originPws);
 		
 		user.setPassword(md5Pws);
 		user.setIsEnable("1");
@@ -46,9 +47,12 @@ public class AuthService {
 		
 		userRepository.save(user);
 		
-		//回傳成功訊息
-		return new ActionResult(true);
-
+		//帳密組合成DTO，直接呼叫登入 API
+		LoginDTO loginData = new LoginDTO();
+		loginData.setAccount(user.getAccount());
+		loginData.setPassword(originPws);
+		
+		return login(loginData);
 	}
 	
 	public ActionResult login (LoginDTO data) {
