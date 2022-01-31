@@ -4,6 +4,8 @@ package com.mall.client.controller;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +27,9 @@ public class ProductController {
 	@Autowired UtilService utilService;
 	
 	@GetMapping("/getProductList")
-	public ActionResult getProductList (@RequestParam("page")@Min(0) Integer page ,@RequestParam("column")@NotEmpty String column) {
+	public ActionResult getProductList (
+			@RequestParam(value="page" ,defaultValue = "0") Integer page
+			,@RequestParam(value="column",defaultValue = "id") String column) {
 
 		Pageable pageable = utilService.pageRequest(page, 8, column, "DESC");
 		return productService.getProductList(pageable);
