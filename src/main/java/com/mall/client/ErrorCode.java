@@ -11,6 +11,8 @@ public enum ErrorCode {
 	ACCOUNT_DUPLICATE("1001101", "this account is used"),
 	ACCOUNT_OR_PWS_INCORRECT("1001102", "account or password incorrect"),
 	ACCOUNT_BAN("1001102","this account has been deactivated"),
+	USER_ID_ILLEGAL("1001103","userId is illegal"),
+	TOKEN_EXPIRED("1001104","token expired"),
 	
 	//使用者相關錯誤
 	USER_ID_NOT_FOUND("1001201","this userId not found"),

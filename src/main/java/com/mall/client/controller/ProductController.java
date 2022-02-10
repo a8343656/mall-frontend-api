@@ -28,9 +28,10 @@ public class ProductController {
 	
 	@GetMapping("/getProductList")
 	public ActionResult getProductList (
-			@RequestParam(value="page" ,defaultValue = "0") Integer page
+			@RequestParam(value="page" ,defaultValue = "1") Integer page
 			,@RequestParam(value="column",defaultValue = "id") String column) {
 
+		
 		Pageable pageable = utilService.pageRequest(page, 8, column, "DESC");
 		return productService.getProductList(pageable);
 	

@@ -37,12 +37,4 @@ public class CommonExceptionHandler {
 			MessageFormat.format(ErrorCode.PARAMETER_ERR.getMsg(),parameterError));
 
 	}
-	
-	@ExceptionHandler(Exception.class)
-	public ActionResult excetionHandler(Exception ex) {
-		
-		System.out.println(ex);
-		
-		return new ActionResult(false, ErrorCode.SYSTEM_ERR.getCode(), ErrorCode.SYSTEM_ERR.getMsg());
-	}
 }
