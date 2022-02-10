@@ -14,7 +14,7 @@ public class UtilService {
 	public PageRequest pageRequest (Integer page , Integer size , String col , String sort) {
 		
 		if(sort == "DESC") {
-			return PageRequest.of(page, size, Sort.by(col).descending());
+			return PageRequest.of(page-1, size, Sort.by(col).descending());
 		} 
 		
 		return PageRequest.of(page, size, Sort.by(col).ascending());
