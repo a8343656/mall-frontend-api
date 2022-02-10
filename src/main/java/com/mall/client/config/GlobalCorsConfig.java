@@ -12,7 +12,8 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
         registry.addMapping("/**")		//允許跨域的路徑
                 .allowedHeaders("*")	//允許請求的 header
                 .allowedMethods("*")	//允許的http方法
-                .maxAge(1800)
+                .allowCredentials(true)
+                .maxAge(1800)			//preflight request 過期時間
                 .allowedOrigins("http://localhost:8080"); //允許跨域的網域
     }
 }

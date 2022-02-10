@@ -8,10 +8,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.product.AddShoppingCarDTO;
+import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
+import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.ProductOrder;
 import com.mall.client.entity.ShoppingCar;
@@ -110,6 +111,15 @@ public class UserService {
 		return new ActionResult(true ,dbData);
 		
 	}
+	
+	public ActionResult removeFromShoppingCar (RemoveShoppingCarDTO data) {
+		System.out.println(data.getProductIdList());
+		shoppingCarRepository.deleteByUserIdAndProductIds(data.getUserId(), data.getProductIdList());
+		return new ActionResult(true);
+		
+	}
+
+
 	
 
 }

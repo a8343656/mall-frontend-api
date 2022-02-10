@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,11 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.product.AddShoppingCarDTO;
+import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
+import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
 
@@ -56,6 +58,13 @@ public class UserController {
 		
 		Pageable pageable = utilService.pageRequest(data.getPage(),data.getPageSize(),data.getSortCol(),"DESC");
 		return userService.getShoppingCarList(data.getUserId(),pageable);
+		
+	}
+	
+	@DeleteMapping("/removeFromShoppingCar")
+	public ActionResult removeFromShoppingCar (@RequestBody @Validated RemoveShoppingCarDTO data ) {
+		
+		return userService.removeFromShoppingCar(data);
 		
 	}
 	

@@ -1,4 +1,4 @@
-package com.mall.client.dto.product;
+package com.mall.client.dto.user;
 
 import javax.validation.constraints.Min;
 import lombok.Data;

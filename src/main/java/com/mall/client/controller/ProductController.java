@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Pageable;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.product.AddShoppingCarDTO;
+import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.service.ProductService;
 import com.mall.client.service.UtilService;
 
