@@ -13,8 +13,15 @@ public class UtilService {
 	
 	public PageRequest pageRequest (Integer page , Integer size , String col , String sort) {
 		
+		// 前端分頁從 1 開始，且避免出現小於第一頁的狀況
+		page = page -1;
+		
+		if(page < 0) {
+			page = 0;
+		}
+		
 		if(sort == "DESC") {
-			return PageRequest.of(page-1, size, Sort.by(col).descending());
+			return PageRequest.of(page, size, Sort.by(col).descending());
 		} 
 		
 		return PageRequest.of(page, size, Sort.by(col).ascending());

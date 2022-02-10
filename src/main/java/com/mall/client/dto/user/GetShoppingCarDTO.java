@@ -14,6 +14,9 @@ public class GetShoppingCarDTO {
 	@Min(0)
 	Integer page ;
 	
+	@Min(0)
+	Integer pageSize ;
+	
 	@NotEmpty
 	String sortCol;
 

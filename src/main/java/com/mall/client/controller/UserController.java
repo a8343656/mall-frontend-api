@@ -1,6 +1,8 @@
 package com.mall.client.controller;
 
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mall.client.dto.ActionResult;
+import com.mall.client.dto.product.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
@@ -41,10 +44,17 @@ public class UserController {
 		
 	}
 	
+	@PostMapping("/addToShoppingCar")
+	public ActionResult addToShoppingCar (@RequestBody @Valid AddShoppingCarDTO data) {
+		
+		return userService.addToShoppingCar(data);
+		
+	}
+	
 	@PostMapping("/getShoppingCarList")
 	public ActionResult getShoppingCarList (@RequestBody @Validated GetShoppingCarDTO data ) {
 		
-		Pageable pageable = utilService.pageRequest(data.getPage(),8,data.getSortCol(),"DESC");
+		Pageable pageable = utilService.pageRequest(data.getPage(),data.getPageSize(),data.getSortCol(),"DESC");
 		return userService.getShoppingCarList(data.getUserId(),pageable);
 		
 	}
@@ -52,7 +62,7 @@ public class UserController {
 	@PostMapping("/getOrderList")
 	public ActionResult getOrderList (@RequestBody @Validated GetOrderListDTO data ) {
 		
-		Pageable pageable = utilService.pageRequest(data.getPage(),8,data.getSortCol(),"DESC");
+		Pageable pageable = utilService.pageRequest(data.getPage(),data.getPageSize(),data.getSortCol(),"DESC");
 		return userService.getOrderList(data.getUserId(),pageable);
 		
 	}

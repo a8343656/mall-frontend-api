@@ -30,7 +30,6 @@ public class ProductController {
 	public ActionResult getProductList (
 			@RequestParam(value="page" ,defaultValue = "1") Integer page
 			,@RequestParam(value="column",defaultValue = "id") String column) {
-
 		
 		Pageable pageable = utilService.pageRequest(page, 8, column, "DESC");
 		return productService.getProductList(pageable);
@@ -44,10 +43,4 @@ public class ProductController {
 		
 	}
 	
-	@PostMapping("/addToShoppingCar")
-	public ActionResult addToShoppingCar (@RequestBody @Valid AddShoppingCarDTO data) {
-		
-		return productService.addToShoppingCar(data);
-		
-	}
 }

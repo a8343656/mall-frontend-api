@@ -1,12 +1,14 @@
 package com.mall.client.service;
 
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
+import com.mall.client.dto.product.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
@@ -23,6 +25,7 @@ public class UserService {
 	
 	@Autowired UserRepository userRepository;
 	@Autowired UtilService utilService;
+	@Autowired CheckService checkService;
 	@Autowired ShoppingCarRepository shoppingCarRepository;
 	@Autowired ProductOrderRepository productOrderRepository;
 	
@@ -72,6 +75,33 @@ public class UserService {
 		//回傳成功訊息
 		return new ActionResult(true,dbData);
 		
+	}
+	
+	public ActionResult addToShoppingCar (AddShoppingCarDTO data) {
+		
+		// 檢查該使用者是否存在，並確認是否有購買資格
+		ActionResult checkResult = checkService.isUserPresentAndBuyAble(data.getUserId());
+		if (!checkResult.isSuccess()) {
+			return checkResult;
+		}
+			
+		// 查詢該商品是否可被購買，且庫存大於1
+		ActionResult checkResult2 = checkService.isProductBuyable(data.getProductId(),1);
+		if (!checkResult2.isSuccess()) {
+			return checkResult2;
+		}
+		
+		//查詢該物品是否已在購物車中，不存在才做儲存
+		List<ShoppingCar> dbList = shoppingCarRepository.findByUserIdAndProductId(data.getUserId(),data.getProductId());
+		if(dbList.isEmpty()) {
+			ShoppingCar car = new ShoppingCar();
+			car.setProductId(data.getProductId());
+			car.setUserId(data.getUserId());
+			shoppingCarRepository.save(car);
+		}
+		
+		return new ActionResult(true);
+
 	}
 	
 	public ActionResult getShoppingCarList (Long userId , Pageable pageable) {
