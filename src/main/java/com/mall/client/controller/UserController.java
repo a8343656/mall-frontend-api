@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
@@ -22,6 +23,7 @@ import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
+import com.mall.client.exception.CantBuyException;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
 
@@ -49,8 +51,18 @@ public class UserController {
 	@PostMapping("/addToShoppingCar")
 	public ActionResult addToShoppingCar (@RequestBody @Valid AddShoppingCarDTO data) {
 		
-		return userService.addToShoppingCar(data);
-		
+		try {
+			return userService.addToShoppingCar(data);
+		}catch (CantBuyException ex) {
+			if(ex.getMessage().equals("notAvaiable")) {
+				return new ActionResult(false,ErrorCode.PRODUCT_NOT_FOUND.getCode() ,ErrorCode.PRODUCT_NOT_FOUND.getMsg());
+			} else if (ex.getMessage().equals("notAvaiable")) {
+				return new ActionResult(false,ErrorCode.PRODUCT_NOT_AVAILABLE.getCode() ,ErrorCode.PRODUCT_NOT_AVAILABLE.getMsg());
+			} else {
+				return new ActionResult(false,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getCode() ,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getMsg());
+			}
+		}
+
 	}
 	
 	@PostMapping("/getShoppingCarList")

@@ -9,6 +9,7 @@ import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Product;
+import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.ProductRepository;
 import com.mall.client.repository.UserRepository;
 
@@ -34,22 +35,21 @@ public class CheckService {
 		
 	}
 	
-	public ActionResult isProductBuyable (Long productId, Integer buyAmount) {
+	public void isProductBuyable (Long productId, Integer buyAmount) {
 		
 		// 查詢該商品是否可被購買，數量是否足夠
 		Optional<Product> data = productRepository.findById(productId);
 		
 		if(!data.isPresent()) {
-			return new ActionResult(false,ErrorCode.PRODUCT_NOT_FOUND.getCode() ,ErrorCode.PRODUCT_NOT_FOUND.getMsg());
+			throw new CantBuyException("notFound");
 		}
 		Product product = data.get();
 		
-		if (product.getIsBuyable() == "0") {
-			return new ActionResult(false,ErrorCode.PRODUCT_NOT_AVAILABLE.getCode() ,ErrorCode.PRODUCT_NOT_AVAILABLE.getMsg());
+		if (product.getIsBuyable().equals("0")) {
+			throw new CantBuyException("notAvaiable");
+
 		} else if(product.getAmount() < buyAmount){
-			return new ActionResult(false,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getCode() ,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getMsg());
-		} else {
-			return new ActionResult(true);
+			throw new CantBuyException("notEnough");
 		}
 		
 	}

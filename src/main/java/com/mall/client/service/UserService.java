@@ -16,6 +16,7 @@ import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.ProductOrder;
 import com.mall.client.entity.ShoppingCar;
+import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.ProductOrderRepository;
 import com.mall.client.repository.ShoppingCarRepository;
 import com.mall.client.repository.UserRepository;
@@ -87,9 +88,10 @@ public class UserService {
 		}
 			
 		// 查詢該商品是否可被購買，且庫存大於1
-		ActionResult checkResult2 = checkService.isProductBuyable(data.getProductId(),1);
-		if (!checkResult2.isSuccess()) {
-			return checkResult2;
+		try {
+			checkService.isProductBuyable(data.getProductId(),1);
+		}catch(CantBuyException ex) {
+			throw ex;
 		}
 		
 		//查詢該物品是否已在購物車中，不存在才做儲存

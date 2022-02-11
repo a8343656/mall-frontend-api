@@ -6,12 +6,10 @@ import javax.validation.constraints.Min;
 import lombok.Data;
 
 @Data
-public class BuyDTO {
+public class Order {
 
-	@Min(1)
-	Long userId;
+	Long productId;
 	
-
-	List<Order> orderList;
+	Integer amount;
 	
 }
