@@ -43,7 +43,12 @@ public class TransactionService {
 			//確認該商品是否可購買，且庫存大於購買數量
 			Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(buyProduct.getProductId(),"1" , 1);// where is_byable = 1
 			
-			Integer newAmount = dbProduct.getAmount() - buyProduct.getBuyAmount();
+			if(dbProduct == null) {
+				pass = false;
+				break;
+			}
+			
+			Integer newAmount = dbProduct.getAmount() - buyProduct.getAmount();
 			
 			if(newAmount < 0) {
 				pass = false;
@@ -56,13 +61,14 @@ public class TransactionService {
 			//建立購買細項
 			BuylistDetail buyListDetail = new BuylistDetail();
 			buyListDetail.setOneProductPrice(buyProduct.getOneProductPrice());
-			buyListDetail.setAmount(buyProduct.getBuyAmount());
+			buyListDetail.setAmount(buyProduct.getAmount());
 			buyListDetail.setProductId(buyProduct.getProductId());
 			detailSet.add(buyListDetail);
 			
 			//release lock
 		}
 		newBuylist.setStatus(0);
+		newBuylist.setUserId(buyData.getUserId());
 		newBuylist.setTotalPrice(buyData.getTotalPrice());
 		newBuylist.setUserBuylistDetail(detailSet);
 		

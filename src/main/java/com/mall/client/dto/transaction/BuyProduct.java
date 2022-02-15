@@ -8,7 +8,7 @@ public class BuyProduct {
 
 	Long productId;
 	
-	Integer buyAmount;
+	Integer amount;
 	
 	Integer oneProductPrice;
 	
