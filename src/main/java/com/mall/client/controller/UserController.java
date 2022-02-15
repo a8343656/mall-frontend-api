@@ -33,6 +33,13 @@ public class UserController {
 
 	@Autowired UserService userService;
 	@Autowired UtilService utilService;
+	
+	@PutMapping("/getMemberData")
+	public ActionResult getMemberData (@RequestBody @Validated ChangeMemberDataDTO changeData ) {
+		
+		return userService.changeMemberData(changeData);
+		
+	}
 
 	@PutMapping("/changeMemberData")
 	public ActionResult changeMemberData (@RequestBody @Validated ChangeMemberDataDTO changeData ) {
@@ -54,13 +61,7 @@ public class UserController {
 		try {
 			return userService.addToShoppingCar(data);
 		}catch (CantBuyException ex) {
-			if(ex.getMessage().equals("notAvaiable")) {
-				return new ActionResult(false,ErrorCode.PRODUCT_NOT_FOUND.getCode() ,ErrorCode.PRODUCT_NOT_FOUND.getMsg());
-			} else if (ex.getMessage().equals("notAvaiable")) {
-				return new ActionResult(false,ErrorCode.PRODUCT_NOT_AVAILABLE.getCode() ,ErrorCode.PRODUCT_NOT_AVAILABLE.getMsg());
-			} else {
-				return new ActionResult(false,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getCode() ,ErrorCode.PRODUCT_AMOUNT_NOT_ENOUGH.getMsg());
-			}
+			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
 
 	}

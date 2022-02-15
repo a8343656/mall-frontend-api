@@ -14,10 +14,10 @@ import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.entity.MallUser;
-import com.mall.client.entity.ProductOrder;
+import com.mall.client.entity.Buylist;
 import com.mall.client.entity.ShoppingCar;
 import com.mall.client.exception.CantBuyException;
-import com.mall.client.repository.ProductOrderRepository;
+import com.mall.client.repository.BuyListRepository;
 import com.mall.client.repository.ShoppingCarRepository;
 import com.mall.client.repository.UserRepository;
 import com.mall.client.ErrorCode;
@@ -29,8 +29,24 @@ public class UserService {
 	@Autowired UtilService utilService;
 	@Autowired CheckService checkService;
 	@Autowired ShoppingCarRepository shoppingCarRepository;
-	@Autowired ProductOrderRepository productOrderRepository;
+	@Autowired BuyListRepository buyListRepository;
 	
+	
+public ActionResult getMemberData (ChangeMemberDataDTO changeData) {
+		
+		// 查詢該使用者是否存在
+		Optional<MallUser> data = userRepository.findById(changeData.getId());
+		if(!data.isPresent()) {
+			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
+		}
+		
+		// 依照傳入的資料修改並儲存
+		MallUser user = data.get();
+		
+		//回傳成功訊息
+		return new ActionResult(true,user);
+		
+	}
 	
 	public ActionResult changeMemberData (ChangeMemberDataDTO changeData) {
 		
@@ -73,7 +89,7 @@ public class UserService {
 	
 	public ActionResult getOrderList (Long userId , Pageable pageable) {
 		
-		Page<ProductOrder> dbData = productOrderRepository.findByUserId(userId,pageable);
+		Page<Buylist> dbData = buyListRepository.findByUserId(userId,pageable);
 		//回傳成功訊息
 		return new ActionResult(true,dbData);
 		

@@ -1,9 +1,12 @@
 package com.mall.client.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -12,29 +15,22 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Entity
-@Table(name="product_order" )
+@Table(name="buylist" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ProductOrder extends BaseEntity{
+public class Buylist extends BaseEntity{
 	
 	@Column(name="user_id")
 	private Long userId;
 	
-	@ManyToOne
-	@JoinColumn(name="user_id" ,insertable = false, updatable = false)
-	private MallUser mallUser;
-	
-	@Column(name="product_id")
-	private Long productId;
-	
-	@ManyToOne
-	@JoinColumn(name="product_id" ,insertable = false, updatable = false)
-	private Product product;
+	@OneToMany
+	@JoinColumn(name="user_buylist_id")
+	private Set<BuylistDetail> userBuylistDetail;
 	
 	@Column(name="status")
 	private Integer status;
 	
-	@Column(name="amount")
-	private Integer amount;
+	@Column(name="total_price")
+	private Integer totalPrice;
 
 }

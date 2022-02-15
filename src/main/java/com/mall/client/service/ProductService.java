@@ -46,7 +46,7 @@ public class ProductService {
 	public ActionResult getProductDetail (Long id) {
 			
 		//找尋該id的商品，並確認該商品是否上架中
-		Product data = productRepository.findByIdAndIsBuyable(id,"1");
+		Product data = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(id,"1",1);
 		if(data == null) {
 			return new ActionResult(false, ErrorCode.PRODUCT_NOT_FOUND.getCode(), ErrorCode.PRODUCT_NOT_FOUND.getMsg());
 		}

@@ -1,16 +1,20 @@
 package com.mall.client.service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.transaction.BuyDTO;
-import com.mall.client.dto.transaction.Order;
-import com.mall.client.entity.ProductOrder;
+import com.mall.client.dto.transaction.BuyProduct;
+import com.mall.client.entity.Buylist;
+import com.mall.client.entity.BuylistDetail;
 import com.mall.client.exception.CantBuyException;
 import com.mall.client.entity.Product;
-import com.mall.client.repository.ProductOrderRepository;
+import com.mall.client.repository.BuyListRepository;
 import com.mall.client.repository.ProductRepository;
 
 @Service
@@ -18,7 +22,7 @@ public class TransactionService {
 	
 	@Autowired CheckService checkService;
 	@Autowired ProductRepository productRepository;
-	@Autowired ProductOrderRepository productOrderRepository;
+	@Autowired BuyListRepository buyListRepository;
 	
 	@Transactional
 	public ActionResult buy (BuyDTO buyData) {
@@ -29,29 +33,46 @@ public class TransactionService {
 			return checkResult;
 		}
 		
-		for (Order order : buyData.getOrderList()) {
+		Buylist newBuylist = new Buylist();
+		Set<BuylistDetail> detailSet = new HashSet<>();
+		boolean pass = true;
+		for (BuyProduct buyProduct : buyData.getBuyList()) {
 			
-			// 查詢該商品是否可被購買，數量是否足夠
-			try {
-				checkService.isProductBuyable(order.getProductId(),order.getAmount());
-			}catch(CantBuyException ex) {
-				throw ex;
+			// 只在這邊做 read write lock 其他地方的讀取不設定，如果有 lock 代表有人正在買商品
+			
+			//確認該商品是否可購買，且庫存大於購買數量
+			Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(buyProduct.getProductId(),"1" , 1);// where is_byable = 1
+			
+			Integer newAmount = dbProduct.getAmount() - buyProduct.getBuyAmount();
+			
+			if(newAmount < 0) {
+				pass = false;
+				break;
 			}
+			dbProduct.setAmount(newAmount);
+			productRepository.save(dbProduct);
 			
-			//減少庫存數量
-			Product buyProduct = productRepository.findById(order.getProductId()).get();
-			buyProduct.setAmount(buyProduct.getAmount()-order.getAmount());
-			productRepository.save(buyProduct);
 			
-			//建立訂單
-			ProductOrder dbOrder = new ProductOrder();
-			dbOrder.setUserId(buyData.getUserId());
-			dbOrder.setProductId(order.getProductId());
-			dbOrder.setStatus(0);
-			dbOrder.setAmount(order.getAmount());
-			productOrderRepository.save(dbOrder);
+			//建立購買細項
+			BuylistDetail buyListDetail = new BuylistDetail();
+			buyListDetail.setOneProductPrice(buyProduct.getOneProductPrice());
+			buyListDetail.setAmount(buyProduct.getBuyAmount());
+			buyListDetail.setProductId(buyProduct.getProductId());
+			detailSet.add(buyListDetail);
+			
+			//release lock
 		}
-
+		newBuylist.setStatus(0);
+		newBuylist.setTotalPrice(buyData.getTotalPrice());
+		newBuylist.setUserBuylistDetail(detailSet);
+		
+		buyListRepository.save(newBuylist);
+		
+		
+		// rollback
+		if (pass == false) {
+			throw new CantBuyException();
+		}
 		
 		return new ActionResult(true);
 	}

@@ -11,7 +11,9 @@ public class BuyDTO {
 	@Min(1)
 	Long userId;
 	
-
-	List<Order> orderList;
+	@Min(0)
+	Integer totalPrice;
+	
+	List<BuyProduct> buyList;
 	
 }

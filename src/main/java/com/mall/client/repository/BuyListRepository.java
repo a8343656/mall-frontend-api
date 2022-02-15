@@ -4,10 +4,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.mall.client.entity.ProductOrder;
+import com.mall.client.entity.Buylist;
 
 @Repository
-public interface ProductOrderRepository extends JpaRepository<ProductOrder,Long>{
+public interface BuyListRepository extends JpaRepository<Buylist,Long>{
 	
-	public Page<ProductOrder> findByUserId (Long userId,Pageable pageable);
+	public Page<Buylist> findByUserId (Long userId,Pageable pageable);
 }
