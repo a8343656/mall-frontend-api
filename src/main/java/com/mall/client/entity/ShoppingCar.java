@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Table(name="shopping_car" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ShoppingCar extends BaseEntity{
+public class ShoppingCar extends NoVesionEntity{
 	
 	@Column(name="user_id")
 	private Long userId;

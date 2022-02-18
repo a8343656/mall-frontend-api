@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.transaction.BuyDTO;
+import com.mall.client.dto.transaction.BuylistDTO;
 import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
@@ -25,10 +25,10 @@ public class TransactionController {
 	@Autowired TransactionService transactionService;
 
 	@PostMapping("/buy")
-	public ActionResult buy (@RequestBody @Validated BuyDTO buyData ) {
+	public ActionResult buy (@RequestBody @Validated BuylistDTO buylistDTO ) {
 		
 		try {
-			return transactionService.buy(buyData);
+			return transactionService.buy(buylistDTO);
 		}catch (CantBuyException ex) {
 				return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}

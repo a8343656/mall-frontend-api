@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 @Table(name="mall_user" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class MallUser extends BaseEntity{
+public class MallUser extends NoVesionEntity{
 	
 	@Column(name="name")
 	private String name;

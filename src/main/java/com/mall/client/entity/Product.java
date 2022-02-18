@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @Table(name="product" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Product extends BaseEntity{
+public class Product extends VesionEntity{
 	
 	@Column(name="name")
 	private String name;
