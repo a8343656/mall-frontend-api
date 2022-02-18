@@ -22,7 +22,6 @@ public class AuthController {
 	@PostMapping("/register")
 	public ActionResult register (@RequestBody @Validated RegisterDTO data ) {
 		
-		
 		return authService.register(data);
 		
 	}

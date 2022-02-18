@@ -29,5 +29,7 @@ public class Product extends VesionEntity{
 	
 	@Column(name="is_buyable")
 	private String isBuyable;
+	
+	
 
 }

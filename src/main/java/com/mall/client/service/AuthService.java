@@ -53,6 +53,7 @@ public class AuthService {
 		loginData.setPassword(originPws);
 		
 		return login(loginData);
+		
 	}
 	
 	public ActionResult login (LoginDTO data) {
@@ -93,14 +94,15 @@ public class AuthService {
 		dataMap.put("userId", dbUser.getId().toString());
 		dataMap.put("token", token);
 		return new ActionResult(true,dataMap);
+		
 	}
 	
 	public ActionResult logout (LogoutDTO data) {
+		
 		//移除該筆登入資料
 		userLoginDataRepository.deleteByUserId(data.getUserId());
-		
-		//回傳成功
 		return new ActionResult(true);
+		
 	}
 	
 

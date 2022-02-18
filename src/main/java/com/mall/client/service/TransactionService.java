@@ -5,8 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.StaleStateException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +33,6 @@ public class TransactionService {
 	
 	@Transactional
 	public ActionResult buy (BuylistDTO buylistDTO) {
-		
 		Buylist newBuylist = modelMapper.map(buylistDTO, Buylist.class);
 		List<BuylistDetail> newDetailList = objectMapperUtils.mapAll(buylistDTO.getBuyList(), BuylistDetail.class);
 		newBuylist.setBuylistDetail(newDetailList);
@@ -45,33 +46,35 @@ public class TransactionService {
 		
 		boolean pass = true;
 		for (BuylistDetail detail : newBuylist.getBuylistDetail()) {
-			
-			detail.setUserBuylist(newBuylist);
-			
-			// 只在這邊做 read write lock 其他地方的讀取不設定，如果有 lock 代表有人正在買商品
-			
-			//確認該商品是否可購買，且庫存大於購買數量
-			Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(detail.getProductId(),"1" , 1);// where is_byable = 1
-			
-			if(dbProduct == null) {
-				pass = false;
-				break;
+			try {
+				detail.setUserBuylist(newBuylist);
+				
+				//確認該商品是否可購買，且庫存大於購買數量
+				Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(detail.getProductId(),"1" , 1);// where is_byable = 1
+				
+				if(dbProduct == null) {
+					pass = false;
+					break;
+				}
+				
+				Integer newAmount = dbProduct.getAmount() - detail.getAmount();
+				
+				if(newAmount < 0) {
+					pass = false;
+					break;
+				}
+				dbProduct.setAmount(newAmount);
+				productRepository.save(dbProduct);
+				
+			}catch(ObjectOptimisticLockingFailureException obe) {
+				//若DB資料有更動，直接 rollback
+				throw new CantBuyException("data time out");
 			}
-			
-			Integer newAmount = dbProduct.getAmount() - detail.getAmount();
-			
-			if(newAmount < 0) {
-				pass = false;
-				break;
-			}
-			dbProduct.setAmount(newAmount);
-			productRepository.save(dbProduct);
-			
+
 		}
 		newBuylist.setStatus(0);
 		
 		buyListRepository.save(newBuylist);
-		
 		
 		// rollback
 		if (pass == false) {
@@ -79,5 +82,6 @@ public class TransactionService {
 		}
 		
 		return new ActionResult(true);
+		
 	}
 }

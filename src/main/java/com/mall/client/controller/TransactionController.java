@@ -1,5 +1,6 @@
 package com.mall.client.controller;
 
+import org.hibernate.StaleStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,10 @@ public class TransactionController {
 		try {
 			return transactionService.buy(buylistDTO);
 		}catch (CantBuyException ex) {
-				return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
+			if(ex.getMessage().equals("data time out")) {
+				return new ActionResult(false,ErrorCode.BUY_SYSTEM_BUSY.getCode() ,ErrorCode.BUY_SYSTEM_BUSY.getMsg());
+			}
+			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
 		
 	}

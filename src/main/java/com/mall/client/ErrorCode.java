@@ -20,7 +20,8 @@ public enum ErrorCode {
 	
 	//商品相關錯誤
 	PRODUCT_NOT_FOUND("1001301","this product not found"),
-	BUY_FAIL("1001302","product not aviable or amount not enough");
+	BUY_FAIL("1001302","product not aviable or amount not enough"),
+	BUY_SYSTEM_BUSY("1001303","buy system is busy , plz try again later");
 	
 	
 	private String code;
