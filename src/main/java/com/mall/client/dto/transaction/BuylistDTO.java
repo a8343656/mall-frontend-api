@@ -14,6 +14,6 @@ public class BuylistDTO {
 	@Min(0)
 	Integer totalPrice;
 	
-	List<BuylistDetailDTO> buyList;
+	List<BuylistDetailDTO> detailList;
 	
 }

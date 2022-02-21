@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.transaction.BuylistDTO;
-import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.exception.CantBuyException;

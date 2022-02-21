@@ -9,12 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.user.AddShoppingCarDTO;
-import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
+import com.mall.client.dto.user.ChangeUserDataDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
+import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Buylist;
+import com.mall.client.entity.BuylistDetail;
 import com.mall.client.entity.ShoppingCar;
 import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.BuyListRepository;
@@ -32,23 +34,23 @@ public class UserService {
 	@Autowired BuyListRepository buyListRepository;
 	
 	
-public ActionResult getMemberData (ChangeMemberDataDTO changeData) {
+public ActionResult getUserData (GetUserDataDto data) {
 		
 		// 查詢該使用者是否存在
-		Optional<MallUser> data = userRepository.findById(changeData.getId());
-		if(!data.isPresent()) {
+		Optional<MallUser> userData = userRepository.findById(data.getId());
+		if(!userData.isPresent()) {
 			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		}
 		
 		// 依照傳入的資料修改並儲存
-		MallUser user = data.get();
+		MallUser user = userData.get();
 		
 		//回傳成功訊息
 		return new ActionResult(true,user);
 		
 	}
 	
-	public ActionResult changeMemberData (ChangeMemberDataDTO changeData) {
+	public ActionResult changeUserData (ChangeUserDataDTO changeData) {
 		
 		// 查詢該使用者是否存在
 		Optional<MallUser> data = userRepository.findById(changeData.getId());
@@ -77,7 +79,7 @@ public ActionResult getMemberData (ChangeMemberDataDTO changeData) {
 		
 		// 依照傳入的資料修改並儲存
 		MallUser user = data.get();
-		String md5Pws = utilService.getMD5(changeData.getPassWord());
+		String md5Pws = utilService.getMD5(changeData.getPassword());
 		user.setPassword(md5Pws);
 
 		userRepository.save(user);
@@ -87,7 +89,7 @@ public ActionResult getMemberData (ChangeMemberDataDTO changeData) {
 		
 	}
 	
-	public ActionResult getOrderList (Long userId , Pageable pageable) {
+	public ActionResult getBuylist (Long userId , Pageable pageable) {
 		
 		Page<Buylist> dbData = buyListRepository.findByUserId(userId,pageable);
 		//回傳成功訊息

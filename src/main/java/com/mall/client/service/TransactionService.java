@@ -34,7 +34,7 @@ public class TransactionService {
 	@Transactional
 	public ActionResult buy (BuylistDTO buylistDTO) {
 		Buylist newBuylist = modelMapper.map(buylistDTO, Buylist.class);
-		List<BuylistDetail> newDetailList = objectMapperUtils.mapAll(buylistDTO.getBuyList(), BuylistDetail.class);
+		List<BuylistDetail> newDetailList = objectMapperUtils.mapAll(buylistDTO.getDetailList(), BuylistDetail.class);
 		newBuylist.setBuylistDetail(newDetailList);
 		
 		// 檢查該使用者是否存在，並確認是否有購買資格
@@ -70,10 +70,9 @@ public class TransactionService {
 				//若DB資料有更動，直接 rollback
 				throw new CantBuyException("data time out");
 			}
-
 		}
-		newBuylist.setStatus(0);
 		
+		newBuylist.setStatus(0);
 		buyListRepository.save(newBuylist);
 		
 		// rollback

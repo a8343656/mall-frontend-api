@@ -12,6 +12,6 @@ public class ChangePwsDTO {
 	Long id;
 	
 	@NotEmpty
-	String passWord;
+	String password;
 
 }

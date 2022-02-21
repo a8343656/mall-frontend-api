@@ -2,6 +2,8 @@ package com.mall.client.controller;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.user.AddShoppingCarDTO;
-import com.mall.client.dto.user.ChangeMemberDataDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
+import com.mall.client.dto.user.ChangeUserDataDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
+import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.exception.CantBuyException;
 import com.mall.client.service.UserService;
@@ -34,17 +37,17 @@ public class UserController {
 	@Autowired UserService userService;
 	@Autowired UtilService utilService;
 	
-	@PutMapping("/getMemberData")
-	public ActionResult getMemberData (@RequestBody @Validated ChangeMemberDataDTO changeData ) {
+	@PostMapping("/getUserData")
+	public ActionResult getUserData (@RequestBody GetUserDataDto data ) {
 		
-		return userService.changeMemberData(changeData);
+		return userService.getUserData(data);
 		
 	}
 
-	@PutMapping("/changeMemberData")
-	public ActionResult changeMemberData (@RequestBody @Validated ChangeMemberDataDTO changeData ) {
+	@PutMapping("/changeUserData")
+	public ActionResult changeUserData (@RequestBody @Validated ChangeUserDataDTO changeData ) {
 		
-		return userService.changeMemberData(changeData);
+		return userService.changeUserData(changeData);
 		
 	}
 	
@@ -81,11 +84,14 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/getOrderList")
+	@PostMapping("/getBuylist")
 	public ActionResult getOrderList (@RequestBody @Validated GetOrderListDTO data ) {
 		
-		Pageable pageable = utilService.pageRequest(data.getPage(),data.getPageSize(),data.getSortCol(),"DESC");
-		return userService.getOrderList(data.getUserId(),pageable);
+		Pageable pageable = utilService.pageRequest(data.getPage(),
+													data.getPageSize(),
+													data.getSortCol(),
+													data.getSortOrder());
+		return userService.getBuylist(data.getId(),pageable);
 		
 	}
 	

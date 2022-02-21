@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UtilService {
 	
-	public PageRequest pageRequest (Integer page , Integer size , String col , String sort) {
+	public PageRequest pageRequest (Integer page , Integer size , String col , String sortOrder) {
 		
 		// 前端分頁從 1 開始，且避免出現小於第一頁的狀況
 		page = page -1;
@@ -20,7 +20,7 @@ public class UtilService {
 			page = 0;
 		}
 		
-		if(sort == "DESC") {
+		if(sortOrder == "DESC") {
 			return PageRequest.of(page, size, Sort.by(col).descending());
 		} 
 		
