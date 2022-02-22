@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -61,6 +62,12 @@ public class AuthInterceptor implements HandlerInterceptor{
 				System.out.println("token 過期");
 				return false;
 			} else {
+				// 使用者持續訪問，把token時效在往後延長
+				Date timeOutDate = DateUtils.addHours(now, 2);
+				UserLoginData loginData = validLoginData.get(0);
+				loginData.setValidTime(timeOutDate);
+				userLoginDataRepository.save(loginData);
+				
 				return true;
 			}
 		}catch(Exception ex) {
