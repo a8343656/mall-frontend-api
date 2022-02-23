@@ -9,5 +9,7 @@ import com.mall.client.entity.Buylist;
 @Repository
 public interface BuyListRepository extends JpaRepository<Buylist,Long>{
 	
-	public Page<Buylist> findByUserId (Long userId,Pageable pageable);
+	public Page<Buylist> findByUserId (Long userId , Pageable pageable);
+	
+	public Buylist findByIdAndUserId (Long id , Long userId);
 }

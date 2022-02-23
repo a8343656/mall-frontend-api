@@ -12,8 +12,10 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.transaction.BuylistDTO;
+import com.mall.client.dto.transaction.CancelOrderDto;
 import com.mall.client.entity.Buylist;
 import com.mall.client.entity.BuylistDetail;
 import com.mall.client.exception.CantBuyException;
@@ -83,4 +85,25 @@ public class TransactionService {
 		return new ActionResult(true);
 		
 	}
+	
+	public ActionResult cancelOrder (CancelOrderDto data) {
+		
+		Buylist dbBuylist= buyListRepository.findByIdAndUserId(data.getOrderId(), data.getUserId());
+		
+		if(dbBuylist== null) {
+			return new ActionResult(false,ErrorCode.DATA_NOT_FOUND.getCode() ,ErrorCode.DATA_NOT_FOUND.getMsg());
+		}
+		
+		//檢查訂單是否已被取消，或者正在寄送中
+		if(dbBuylist.getStatus() == -1 || dbBuylist.getStatus()>0 ) {
+			return new ActionResult(false,ErrorCode.ORDER_CANT_CANCEL.getCode() ,ErrorCode.ORDER_CANT_CANCEL.getMsg());
+		}
+		
+		dbBuylist.setStatus(-1);
+		buyListRepository.save(dbBuylist);
+		
+		return new ActionResult(true);
+		
+	}
+	
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.transaction.BuylistDTO;
+import com.mall.client.dto.transaction.CancelOrderDto;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.exception.CantBuyException;
@@ -36,6 +37,13 @@ public class TransactionController {
 			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
 		
+	}
+	
+	@PostMapping("/cancelOrder")
+	public ActionResult cancelOrder (@RequestBody @Validated CancelOrderDto cancelOrderDto ) {
+	
+			return transactionService.cancelOrder(cancelOrderDto);
+
 	}
 	
 }

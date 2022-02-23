@@ -6,6 +6,7 @@ public enum ErrorCode {
 	PARAMETER_ERR("1001001", "parameter error {0}"),
 	SORT_COLUMN_ERR("1001002", "sort column error {0}"),
 	SYSTEM_ERR("1001003", "system error plz check log"),
+	DATA_NOT_FOUND("1001004","search data not found"),
 	
 	//登入相關錯誤
 	ACCOUNT_DUPLICATE("1001101", "this account is used"),
@@ -21,8 +22,10 @@ public enum ErrorCode {
 	//商品相關錯誤
 	PRODUCT_NOT_FOUND("1001301","this product not found"),
 	BUY_FAIL("1001302","product not aviable or amount not enough"),
-	BUY_SYSTEM_BUSY("1001303","buy system is busy , plz try again later");
+	BUY_SYSTEM_BUSY("1001303","buy system is busy , plz try again later"),
 	
+	//交易相關
+	ORDER_CANT_CANCEL("1001401","order can't cancel , because product sending or finish");
 	
 	private String code;
 	private String msg;
