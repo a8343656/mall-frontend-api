@@ -11,6 +11,7 @@ import com.mall.client.dto.ActionResult;
 import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.ChangeUserDataDTO;
+import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
@@ -89,9 +90,9 @@ public ActionResult getUserData (GetUserDataDto data) {
 		
 	}
 	
-	public ActionResult getBuylist (Long userId , Pageable pageable) {
+	public ActionResult getBuylist (GetOrderListDTO data , Pageable pageable) {
 		
-		Page<Buylist> dbData = buyListRepository.findByUserId(userId,pageable);
+		Page<Buylist> dbData = buyListRepository.findByUserIdAndStatus(data.getUserId(),data.getStatus(),pageable);
 		//回傳成功訊息
 		return new ActionResult(true,dbData);
 		
