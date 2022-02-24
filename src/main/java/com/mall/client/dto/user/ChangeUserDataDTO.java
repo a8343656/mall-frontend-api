@@ -9,7 +9,7 @@ import lombok.Data;
 public class ChangeUserDataDTO {
 	
 	@Min(1)
-	Long id;
+	Long userId;
 	
 	@NotEmpty
 	String name;

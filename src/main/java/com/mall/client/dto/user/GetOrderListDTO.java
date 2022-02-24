@@ -9,7 +9,7 @@ import lombok.Data;
 public class GetOrderListDTO {
 	
 	@Min(1)
-	Long id;
+	Long userId;
 	
 	@Min(0)
 	Integer page ;

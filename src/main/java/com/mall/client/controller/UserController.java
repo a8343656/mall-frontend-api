@@ -91,7 +91,7 @@ public class UserController {
 													data.getPageSize(),
 													data.getSortCol(),
 													data.getSortOrder());
-		return userService.getBuylist(data.getId(),pageable);
+		return userService.getBuylist(data.getUserId(),pageable);
 		
 	}
 	

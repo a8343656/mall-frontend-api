@@ -9,7 +9,7 @@ import lombok.Data;
 public class ChangePwsDTO {
 	
 	@Min(1)
-	Long id;
+	Long userId;
 	
 	@NotEmpty
 	String password;

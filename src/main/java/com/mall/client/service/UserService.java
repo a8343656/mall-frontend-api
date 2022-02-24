@@ -37,7 +37,7 @@ public class UserService {
 public ActionResult getUserData (GetUserDataDto data) {
 		
 		// 查詢該使用者是否存在
-		Optional<MallUser> userData = userRepository.findById(data.getId());
+		Optional<MallUser> userData = userRepository.findById(data.getUserId());
 		if(!userData.isPresent()) {
 			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		}
@@ -53,7 +53,7 @@ public ActionResult getUserData (GetUserDataDto data) {
 	public ActionResult changeUserData (ChangeUserDataDTO changeData) {
 		
 		// 查詢該使用者是否存在
-		Optional<MallUser> data = userRepository.findById(changeData.getId());
+		Optional<MallUser> data = userRepository.findById(changeData.getUserId());
 		if(!data.isPresent()) {
 			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		}
@@ -72,7 +72,7 @@ public ActionResult getUserData (GetUserDataDto data) {
 	public ActionResult changePws (ChangePwsDTO changeData) {
 		
 		// 查詢該使用者是否存在
-		Optional<MallUser> data = userRepository.findById(changeData.getId());
+		Optional<MallUser> data = userRepository.findById(changeData.getUserId());
 		if(!data.isPresent()) {
 			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		}
