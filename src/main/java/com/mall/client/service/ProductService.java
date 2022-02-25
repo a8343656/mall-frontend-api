@@ -3,7 +3,6 @@ package com.mall.client.service;
 import org.springframework.stereotype.Service;
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Product;
 import com.mall.client.entity.ShoppingCar;

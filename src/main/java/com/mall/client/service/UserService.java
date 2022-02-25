@@ -1,6 +1,7 @@
 package com.mall.client.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,16 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.ChangeUserDataDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
-import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
+import com.mall.client.dto.user.AddShoppingCarDto;
+import com.mall.client.dto.user.ShoppingCarProduct;
+import com.mall.client.dto.user.updateShoppingCarDto;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Buylist;
-import com.mall.client.entity.BuylistDetail;
 import com.mall.client.entity.ShoppingCar;
 import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.BuyListRepository;
@@ -98,30 +99,75 @@ public ActionResult getUserData (GetUserDataDto data) {
 		
 	}
 	
-	public ActionResult addToShoppingCar (AddShoppingCarDTO data) {
+	public ActionResult addShoppingCar (AddShoppingCarDto data) {
+		// 檢查該使用者是否存在，並確認是否有購買資格
+		ActionResult checkResult = checkService.isUserPresentAndBuyAble(data.getUserId());
+		if (!checkResult.isSuccess()) {
+			return checkResult;
+		}
+		for(ShoppingCarProduct addItem : data.getUpdateList()) {
+			// 查詢該商品是否可被購買，且庫存大於想購買的數量
+			try {
+				checkService.isProductBuyable(addItem.getProductId(),addItem.getSaveAmount());
+			}catch(CantBuyException ex) {
+				throw ex;
+			}
+			
+			// 判斷該商品已在購物車中，若已存在原始購買數量 + 新增購買數量
+			List<ShoppingCar> dbList = shoppingCarRepository.findByUserIdAndProductId(data.getUserId(),addItem.getProductId());
+			if(dbList.isEmpty()) {
+				ShoppingCar newCar = new ShoppingCar();
+				newCar.setProductId(addItem.getProductId());
+				newCar.setAmount(addItem.getSaveAmount());
+				newCar.setUserId(data.getUserId());
+				shoppingCarRepository.save(newCar);
+			} else {
+				ShoppingCar dbCar = dbList.get(0);
+				dbCar.setAmount( dbCar.getAmount() + addItem.getSaveAmount());
+				shoppingCarRepository.save(dbCar);
+			}
+		}
+		return new ActionResult(true);
+		
+	}
+	
+	public ActionResult updateShoppingCar (updateShoppingCarDto data) {
 		
 		// 檢查該使用者是否存在，並確認是否有購買資格
 		ActionResult checkResult = checkService.isUserPresentAndBuyAble(data.getUserId());
 		if (!checkResult.isSuccess()) {
 			return checkResult;
 		}
-			
-		// 查詢該商品是否可被購買，且庫存大於1
-		try {
-			checkService.isProductBuyable(data.getProductId(),1);
-		}catch(CantBuyException ex) {
-			throw ex;
-		}
 		
-		//查詢該物品是否已在購物車中，不存在才做儲存
-		List<ShoppingCar> dbList = shoppingCarRepository.findByUserIdAndProductId(data.getUserId(),data.getProductId());
-		if(dbList.isEmpty()) {
-			ShoppingCar car = new ShoppingCar();
-			car.setProductId(data.getProductId());
-			car.setUserId(data.getUserId());
-			shoppingCarRepository.save(car);
+		// 如果動作為刪除
+		if(data.getAction().equals("delete")) {
+			List<Long> deleteIdList = new ArrayList<>();
+			for(ShoppingCarProduct item : data.getUpdateList()) {
+				deleteIdList.add(item.getProductId());
+			}
+			shoppingCarRepository.deleteByUserIdAndProductIds(data.getUserId(), deleteIdList);
+		} else {
+			//其餘動作為新增或更新數量
+			for(ShoppingCarProduct updateItem : data.getUpdateList()) {
+				// 查詢該商品是否可被購買，且庫存大於想購買的數量
+				try {
+					checkService.isProductBuyable(updateItem.getProductId(),updateItem.getSaveAmount());
+				}catch(CantBuyException ex) {
+					throw ex;
+				}
+				
+				// 判斷是新增或更新數量
+				List<ShoppingCar> dbList = shoppingCarRepository.findByUserIdAndProductId(data.getUserId(),updateItem.getProductId());
+				if(dbList.isEmpty()) {
+					return new ActionResult(false,ErrorCode.DATA_NOT_FOUND.getCode() ,ErrorCode.DATA_NOT_FOUND.getMsg());
+				}
+				
+				ShoppingCar dbCar = dbList.get(0);
+				dbCar.setAmount(updateItem.getSaveAmount());
+				shoppingCarRepository.save(dbCar);
+				
+			}
 		}
-		
 		return new ActionResult(true);
 
 	}
@@ -134,7 +180,6 @@ public ActionResult getUserData (GetUserDataDto data) {
 	}
 	
 	public ActionResult removeFromShoppingCar (RemoveShoppingCarDTO data) {
-		System.out.println(data.getProductIdList());
 		shoppingCarRepository.deleteByUserIdAndProductIds(data.getUserId(), data.getProductIdList());
 		return new ActionResult(true);
 		

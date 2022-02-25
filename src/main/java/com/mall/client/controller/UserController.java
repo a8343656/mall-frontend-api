@@ -19,13 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
-import com.mall.client.dto.user.AddShoppingCarDTO;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.ChangeUserDataDTO;
 import com.mall.client.dto.user.GetOrderListDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
 import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
+import com.mall.client.dto.user.AddShoppingCarDto;
+import com.mall.client.dto.user.updateShoppingCarDto;
 import com.mall.client.exception.CantBuyException;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
@@ -58,11 +59,22 @@ public class UserController {
 		
 	}
 	
-	@PostMapping("/addToShoppingCar")
-	public ActionResult addToShoppingCar (@RequestBody @Valid AddShoppingCarDTO data) {
+	@PostMapping("/addShoppingCar")
+	public ActionResult addShoppingCar (@RequestBody @Valid AddShoppingCarDto data) {
 		
 		try {
-			return userService.addToShoppingCar(data);
+			return userService.addShoppingCar(data);
+		}catch (CantBuyException ex) {
+			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
+		}
+
+	}
+	
+	@PostMapping("/updateShoppingCar")
+	public ActionResult updateShoppingCar (@RequestBody @Valid updateShoppingCarDto data) {
+		
+		try {
+			return userService.updateShoppingCar(data);
 		}catch (CantBuyException ex) {
 			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
@@ -74,13 +86,6 @@ public class UserController {
 		
 		Pageable pageable = utilService.pageRequest(data.getPage(),data.getPageSize(),data.getSortCol(),"DESC");
 		return userService.getShoppingCarList(data.getUserId(),pageable);
-		
-	}
-	
-	@DeleteMapping("/removeFromShoppingCar")
-	public ActionResult removeFromShoppingCar (@RequestBody @Validated RemoveShoppingCarDTO data ) {
-		
-		return userService.removeFromShoppingCar(data);
 		
 	}
 	

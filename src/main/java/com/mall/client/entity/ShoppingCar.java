@@ -10,7 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
+import org.hibernate.annotations.DynamicUpdate;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Table(name="shopping_car" )
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ShoppingCar extends NoVesionEntity{
+public class ShoppingCar extends VesionEntity{
 	
 	@Column(name="user_id")
 	private Long userId;
@@ -34,5 +34,7 @@ public class ShoppingCar extends NoVesionEntity{
 	@ManyToOne
 	@JoinColumn(name="product_id" ,insertable = false, updatable = false)
 	private Product product;
+	
+	private Integer amount;
 	
 }
