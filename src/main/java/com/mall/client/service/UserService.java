@@ -147,21 +147,11 @@ public ActionResult getUserData (GetUserDataDto data) {
 			}
 			shoppingCarRepository.deleteByUserIdAndProductIds(data.getUserId(), deleteIdList);
 		} else {
-			//其餘動作為新增或更新數量
+			//其餘動作為更新
 			for(ShoppingCarProduct updateItem : data.getUpdateList()) {
-				// 查詢該商品是否可被購買，且庫存大於想購買的數量
-				try {
-					checkService.isProductBuyable(updateItem.getProductId(),updateItem.getSaveAmount());
-				}catch(CantBuyException ex) {
-					throw ex;
-				}
 				
-				// 判斷是新增或更新數量
+				// 由於不是真正的購買，且前端會重Load，購買商品不做檢查直接更新數量
 				List<ShoppingCar> dbList = shoppingCarRepository.findByUserIdAndProductId(data.getUserId(),updateItem.getProductId());
-				if(dbList.isEmpty()) {
-					return new ActionResult(false,ErrorCode.DATA_NOT_FOUND.getCode() ,ErrorCode.DATA_NOT_FOUND.getMsg());
-				}
-				
 				ShoppingCar dbCar = dbList.get(0);
 				dbCar.setAmount(updateItem.getSaveAmount());
 				shoppingCarRepository.save(dbCar);
