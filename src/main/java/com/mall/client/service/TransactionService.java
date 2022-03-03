@@ -79,7 +79,7 @@ public class TransactionService {
 		
 		// rollback
 		if (pass == false) {
-			throw new CantBuyException();
+			throw new CantBuyException("product can't buy");
 		}
 		
 		return new ActionResult(true);
