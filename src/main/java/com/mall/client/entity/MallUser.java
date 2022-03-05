@@ -34,4 +34,7 @@ public class MallUser extends NoVesionEntity{
 	@Column(name="is_shopable")
 	private String isShopable;
 	
+	@Column(name="cell_phone")
+	private String cellPhone;
+	
 }

@@ -64,6 +64,7 @@ public ActionResult getUserData (GetUserDataDto data) {
 		MallUser user = data.get();
 		user.setName(changeData.getName());
 		user.setAddress(changeData.getAddress());
+		user.setCellPhone(changeData.getCellPhone());
 		userRepository.save(user);
 		
 		//回傳成功訊息
