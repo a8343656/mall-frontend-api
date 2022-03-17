@@ -52,7 +52,7 @@ public class TransactionService {
 				detail.setUserBuylist(newBuylist);
 				
 				//確認該商品是否可購買，且庫存大於購買數量
-				Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThan(detail.getProductId(),"1" , 1);// where is_byable = 1
+				Product dbProduct = productRepository.findByIdAndIsBuyableAndAmountGreaterThanEqual(detail.getProductId(),"1" , detail.getAmount());// where is_byable = 1
 				
 				if(dbProduct == null) {
 					pass = false;
@@ -60,15 +60,10 @@ public class TransactionService {
 				}
 				
 				Integer newAmount = dbProduct.getAmount() - detail.getAmount();
-				
-				if(newAmount < 0) {
-					pass = false;
-					break;
-				}
 				dbProduct.setAmount(newAmount);
 				productRepository.save(dbProduct);
 				
-			}catch(ObjectOptimisticLockingFailureException obe) {
+			} catch(ObjectOptimisticLockingFailureException obe) {
 				//若DB資料有更動，直接 rollback
 				throw new CantBuyException("data time out");
 			}
@@ -90,7 +85,7 @@ public class TransactionService {
 		
 		Buylist dbBuylist= buyListRepository.findByIdAndUserId(data.getOrderId(), data.getUserId());
 		
-		if(dbBuylist== null) {
+		if(dbBuylist == null) {
 			return new ActionResult(false,ErrorCode.DATA_NOT_FOUND.getCode() ,ErrorCode.DATA_NOT_FOUND.getMsg());
 		}
 		

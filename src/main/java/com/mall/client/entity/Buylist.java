@@ -29,6 +29,12 @@ public class Buylist extends NoVesionEntity{
 	@Column(name="user_id")
 	private Long userId;
 	
+	@Column(name="send_address")
+	private String sendAddress;
+	
+	@Column(name="payment_method")
+	private Integer paymentMethod;
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="buylist_id")
 	private List<BuylistDetail> buylistDetail;
@@ -38,5 +44,7 @@ public class Buylist extends NoVesionEntity{
 	
 	@Column(name="total_price")
 	private Integer totalPrice;
+	
+	
 
 }

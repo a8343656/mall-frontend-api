@@ -90,8 +90,8 @@ public class AuthService {
 		userLoginDataRepository.save(loginData);
 		
 		//回傳 token 與成功訊息
-		Map<String, String> dataMap = new HashMap<>();
-		dataMap.put("userId", dbUser.getId().toString());
+		Map<String, Object> dataMap = new HashMap<>();
+		dataMap.put("userId", dbUser.getId());
 		dataMap.put("token", token);
 		return new ActionResult(true,dataMap);
 		

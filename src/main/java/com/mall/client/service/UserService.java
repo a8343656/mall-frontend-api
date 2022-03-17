@@ -36,7 +36,7 @@ public class UserService {
 	@Autowired BuyListRepository buyListRepository;
 	
 	
-public ActionResult getUserData (GetUserDataDto data) {
+	public ActionResult getUserData (GetUserDataDto data) {
 		
 		// 查詢該使用者是否存在
 		Optional<MallUser> userData = userRepository.findById(data.getUserId());
@@ -44,11 +44,8 @@ public ActionResult getUserData (GetUserDataDto data) {
 			return new ActionResult(false , ErrorCode.USER_ID_NOT_FOUND.getCode(),ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		}
 		
-		// 依照傳入的資料修改並儲存
-		MallUser user = userData.get();
-		
-		//回傳成功訊息
-		return new ActionResult(true,user);
+		//回傳使用者資料
+		return new ActionResult(true,userData.get());
 		
 	}
 	
@@ -169,14 +166,5 @@ public ActionResult getUserData (GetUserDataDto data) {
 		return new ActionResult(true ,dbData);
 		
 	}
-	
-	public ActionResult removeFromShoppingCar (RemoveShoppingCarDTO data) {
-		shoppingCarRepository.deleteByUserIdAndProductIds(data.getUserId(), data.getProductIdList());
-		return new ActionResult(true);
-		
-	}
-
-
-	
 
 }

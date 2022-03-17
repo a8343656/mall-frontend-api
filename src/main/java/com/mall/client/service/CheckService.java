@@ -28,7 +28,7 @@ public class CheckService {
 			return new ActionResult(false,ErrorCode.USER_ID_NOT_FOUND.getCode() ,ErrorCode.USER_ID_NOT_FOUND.getMsg());
 		} 
 		else if(data.get().getIsEnable() == "0" || data.get().getIsShopable() == "0") {
-			return new ActionResult(false,ErrorCode.USER_ID_NOT_FOUND.getCode() ,ErrorCode.USER_ID_NOT_FOUND.getMsg());
+			return new ActionResult(false,ErrorCode.USER_CANT_BUY_PRODUCT.getCode() ,ErrorCode.USER_CANT_BUY_PRODUCT.getMsg());
 		} else {
 			return new ActionResult(true);
 		}
