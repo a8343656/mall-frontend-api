@@ -14,6 +14,7 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
                 .allowedMethods("*")	//允許的http方法
                 .allowCredentials(true)
                 .maxAge(1800)			//preflight request 過期時間
-                .allowedOrigins("http://localhost:8080"); //允許跨域的網域
+                .allowedOrigins("http://localhost:8080" 
+                				,"http://192.168.50.93:81"); //允許跨域的網域
     }
 }

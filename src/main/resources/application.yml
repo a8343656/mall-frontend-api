@@ -2,15 +2,14 @@ server:
   port: 8081
 spring:
   datasource:
-    url: "jdbc:postgresql://192.168.50.93:5432/postgres"
     username: "postgres"
     password: "admin"
     driverClassName: "org.postgresql.Driver"
   jpa:
     show-sql: true 
+  profiles:
+    active: dev
 
 logging:
   level:
     root: INFO
-  file:
-    name: dev.log

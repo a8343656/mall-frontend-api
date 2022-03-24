@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://postgreSQL:5432/postgres"
+logging:
+  file:
+    name: /opt/logs/dev.log
