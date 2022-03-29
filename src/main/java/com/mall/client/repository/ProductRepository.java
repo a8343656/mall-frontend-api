@@ -11,5 +11,6 @@ public interface ProductRepository extends JpaRepository<Product,Long>{
 	
 	public Page<Product> findByIsBuyable (String isBuyable , Pageable pageable);
 	public Product findByIdAndIsBuyableAndAmountGreaterThanEqual (Long id , String isBuyable, Integer amount);
+	public Product findByIdAndIsBuyable (Long id , String isBuyable);
 	
 }
