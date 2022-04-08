@@ -18,7 +18,6 @@ import com.mall.client.dto.transaction.BuylistDTO;
 import com.mall.client.dto.transaction.CancelOrderDto;
 import com.mall.client.entity.Buylist;
 import com.mall.client.entity.BuylistDetail;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.entity.Product;
 import com.mall.client.repository.BuyListRepository;
 import com.mall.client.repository.ProductRepository;
@@ -65,7 +64,7 @@ public class TransactionService {
 				
 			} catch(ObjectOptimisticLockingFailureException obe) {
 				//若DB資料有更動，直接 rollback
-				throw new CantBuyException("data time out");
+				throw new RuntimeException("data time out");
 			}
 		}
 		
@@ -74,7 +73,7 @@ public class TransactionService {
 		
 		// rollback
 		if (pass == false) {
-			throw new CantBuyException("product can't buy");
+			throw new RuntimeException("product can't buy");
 		}
 		
 		return new ActionResult(true);

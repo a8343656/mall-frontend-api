@@ -9,7 +9,6 @@ import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Product;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.ProductRepository;
 import com.mall.client.repository.UserRepository;
 
@@ -41,15 +40,15 @@ public class CheckService {
 		Optional<Product> data = productRepository.findById(productId);
 		
 		if(!data.isPresent()) {
-			throw new CantBuyException("notFound");
+			throw new RuntimeException("notFound");
 		}
 		Product product = data.get();
 		
 		if (product.getIsBuyable().equals("0")) {
-			throw new CantBuyException("notAvaiable");
+			throw new RuntimeException("notAvaiable");
 
 		} else if(product.getAmount() < buyAmount){
-			throw new CantBuyException("notEnough");
+			throw new RuntimeException("notEnough");
 		}
 		
 	}

@@ -18,7 +18,6 @@ import com.mall.client.dto.transaction.BuylistDetailDTO;
 import com.mall.client.dto.transaction.CancelOrderDto;
 import com.mall.client.entity.Buylist;
 import com.mall.client.entity.Product;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.BuyListRepository;
 import com.mall.client.repository.ProductRepository;
 
@@ -46,7 +45,7 @@ public class TransactionServiceTest {
 		detailList.add(detail);
 		buylist.setDetailList(detailList);
 		
-		CantBuyException ex = Assertions.assertThrows(CantBuyException.class, 
+		RuntimeException ex = Assertions.assertThrows(RuntimeException.class, 
 				()->transactionService.buy(buylist));
 		Assertions.assertEquals("data time out" , ex.getMessage());
 		
@@ -66,7 +65,7 @@ public class TransactionServiceTest {
 		detailList.add(detail);
 		buylist.setDetailList(detailList);
 		
-		CantBuyException ex = Assertions.assertThrows(CantBuyException.class, 
+		RuntimeException ex = Assertions.assertThrows(RuntimeException.class, 
 				()->transactionService.buy(buylist));
 		Assertions.assertEquals("product can't buy" , ex.getMessage());
 	}

@@ -27,7 +27,6 @@ import com.mall.client.dto.user.GetUserDataDto;
 import com.mall.client.dto.user.RemoveShoppingCarDTO;
 import com.mall.client.dto.user.AddShoppingCarDto;
 import com.mall.client.dto.user.updateShoppingCarDto;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
 
@@ -64,7 +63,7 @@ public class UserController {
 		
 		try {
 			return userService.addShoppingCar(data);
-		}catch (CantBuyException ex) {
+		}catch (RuntimeException ex) {
 			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
 
@@ -75,7 +74,7 @@ public class UserController {
 		
 		try {
 			return userService.updateShoppingCar(data);
-		}catch (CantBuyException ex) {
+		}catch (RuntimeException ex) {
 			return new ActionResult(false,ErrorCode.BUY_FAIL.getCode() ,ErrorCode.BUY_FAIL.getMsg());
 		}
 

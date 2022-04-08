@@ -68,7 +68,7 @@ public class ProductServiceTest {
 		dbProduct.setId(1L);
 		dbProduct.setName("test");
 		
-		Mockito.when(productRepository.findByIdAndIsBuyableAndAmountGreaterThanEqual(Mockito.any(),Mockito.any(),Mockito.any()))
+		Mockito.when(productRepository.findByIdAndIsBuyable(Mockito.any(),Mockito.any()))
 				.thenReturn(dbProduct);
 		
 		ActionResult result = productService.getProductDetail(1L);

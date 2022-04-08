@@ -20,7 +20,6 @@ import com.mall.client.dto.user.updateShoppingCarDto;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Buylist;
 import com.mall.client.entity.ShoppingCar;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.BuyListRepository;
 import com.mall.client.repository.ShoppingCarRepository;
 import com.mall.client.repository.UserRepository;
@@ -107,7 +106,7 @@ public class UserService {
 			// 查詢該商品是否可被購買，且庫存大於想購買的數量
 			try {
 				checkService.isProductBuyable(addItem.getProductId(),addItem.getSaveAmount());
-			}catch(CantBuyException ex) {
+			}catch(RuntimeException ex) {
 				throw ex;
 			}
 			

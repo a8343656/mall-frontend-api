@@ -13,7 +13,6 @@ import com.mall.client.ErrorCode;
 import com.mall.client.dto.ActionResult;
 import com.mall.client.entity.MallUser;
 import com.mall.client.entity.Product;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.repository.ProductRepository;
 import com.mall.client.repository.UserRepository;
 
@@ -66,7 +65,7 @@ public class CheckServiceTest {
 		
 		Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 		
-		CantBuyException ex = Assertions.assertThrows(CantBuyException.class, 
+		RuntimeException ex = Assertions.assertThrows(RuntimeException.class, 
 							()->checkService.isProductBuyable(1L , 10));
 		Assertions.assertEquals("notFound" , ex.getMessage());
 		
@@ -81,7 +80,7 @@ public class CheckServiceTest {
 		
 		Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(dbProduct));
 		
-		CantBuyException ex = Assertions.assertThrows(CantBuyException.class, 
+		RuntimeException ex = Assertions.assertThrows(RuntimeException.class, 
 							()->checkService.isProductBuyable(1L , 10));
 		Assertions.assertEquals("notAvaiable" , ex.getMessage());
 		
@@ -97,7 +96,7 @@ public class CheckServiceTest {
 		
 		Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(dbProduct));
 		
-		CantBuyException ex = Assertions.assertThrows(CantBuyException.class, 
+		RuntimeException ex = Assertions.assertThrows(RuntimeException.class, 
 							()->checkService.isProductBuyable(1L , 10));
 		Assertions.assertEquals("notEnough" , ex.getMessage());
 		

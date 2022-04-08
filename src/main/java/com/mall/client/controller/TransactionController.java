@@ -14,7 +14,6 @@ import com.mall.client.dto.transaction.BuylistDTO;
 import com.mall.client.dto.transaction.CancelOrderDto;
 import com.mall.client.dto.user.ChangePwsDTO;
 import com.mall.client.dto.user.GetShoppingCarDTO;
-import com.mall.client.exception.CantBuyException;
 import com.mall.client.service.TransactionService;
 import com.mall.client.service.UserService;
 import com.mall.client.service.UtilService;
@@ -30,7 +29,7 @@ public class TransactionController {
 		
 		try {
 			return transactionService.buy(buylistDTO);
-		}catch (CantBuyException ex) {
+		}catch (RuntimeException ex) {
 			if(ex.getMessage().equals("data time out")) {
 				return new ActionResult(false,ErrorCode.BUY_SYSTEM_BUSY.getCode() ,ErrorCode.BUY_SYSTEM_BUSY.getMsg());
 			}
